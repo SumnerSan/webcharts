@@ -1,2 +1,2 @@
 # webcharts
-rShiny app to display published data in runcharts, applying HIS specifications
+A runchart tool applying HIS specification for rebasing
