@@ -198,8 +198,8 @@ RunChart = function(measure, subgroup, shiftsens) {
     group_by(trendNo)%>%
     dplyr::mutate(trendlength = sum(trender != "fill"))%>% #Calculate length of trends
     ungroup()%>%
-    mutate(trendind = ifelse(trendlength >= 5, 1,#Flag reliable trends
-                             ifelse(lead(trendlength)>= 5, 1, NA)))%>% #Very lazy but backfills at changepoints
+    mutate(trendind = ifelse(trendlength >= 5, measure,#Flag reliable trends
+                             ifelse(lead(trendlength)>= 5, measure, NA)))%>% #Very lazy but backfills at changepoints
     dplyr::select(-c(trender, trenderpres, trendNo, trendlength))#remove obsolete columns
   
   if (any(is.na(measure))) {

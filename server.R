@@ -71,8 +71,8 @@ heading <- reactive({
     geom_point(aes(x = subgroup, y=measure, group = 1), colour = "skyblue", size = 2) +  
     geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "orange") +
     geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "orange", size = 1) +
-    geom_point(aes(x = subgroup, y=highlight, group = 1), colour = "orange") +
-    geom_point(aes(x = subgroup, y=measure[rundata$trendind == 1]), shape = 1, size = 5, colour = "blue") +
+    geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "orange") +
+    geom_point(aes(x = subgroup, y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "blue") +
     geom_text(aes(x = subgroup, y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
     theme(axis.text.x=element_text(angle = 90, hjust = 0), panel.background = element_rect(fill = "transparent")) +
     geom_text(x = min(rundata$subgroup), label = "90% target", y = 90, vjust = 1, hjust = 0)+
