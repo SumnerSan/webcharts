@@ -157,7 +157,7 @@ RunChart = function(measure, subgroup, shiftsens) {
     dataDF$base_n[shiftpos:length(dataDF$base_n)] = base_n
     # Label baseline (Temporary)
     dataDF$base_label[shiftpos] = paste0("Temporary: ", round(dataDF$median[shiftpos]))
-    return(dataDF)
+    break
     
     }
     
