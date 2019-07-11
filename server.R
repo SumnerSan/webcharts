@@ -67,22 +67,23 @@ heading <- reactive({
     
   ggplot(rundata) +
     geom_hline(yintercept = 90, linetype = "dotted", colour = "black", alpha = 0.3) +
-    geom_line(aes(x = subgroup, y=measure, group = 1), colour = "skyblue", size = 1) + 
-    geom_point(aes(x = subgroup, y=measure, group = 1), colour = "skyblue", size = 2) +  
-    geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "orange") +
-    geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "orange", size = 1) +
-    geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "orange") +
-    geom_point(aes(x = subgroup, y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "blue") +
+    geom_line(aes(x = subgroup, y=measure, group = 1), colour = "#007db3", size = 1) + 
+    geom_point(aes(x = subgroup, y=measure, group = 1), colour = "#007db3", size = 2) +  
+    geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
+    geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
+    geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "#ffcd04") +
+    geom_point(aes(x = subgroup, y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "#004785") +
     geom_text(aes(x = subgroup, y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
     theme(axis.text.x=element_text(angle = 90, hjust = 0), panel.background = element_rect(fill = "transparent")) +
     geom_text(x = min(rundata$subgroup), label = "90% target", y = 90, vjust = 1, hjust = 0)+
     #geom_vline(xintercept = event1(), linetype = "dashed")+
     #geom_text(x = event1(), label = stringr::str_wrap(anno1(),30), y = max(as.numeric(rundata$measure))*0.1, vjust = 1)+
-    scale_y_continuous(limits=c(0, 100), expand = c(0, 0)) +
+    scale_y_continuous(limits=c(0, 110), expand = c(0, 0)) +
     #scale_x_continuous(breaks=pretty(subgroup, n=30)) +
     scale_x_date(date_breaks = "3 months", date_labels = "%b-%Y") +
     xlab("Month of return") + ylab(yaxis()) +
-    ggtitle(paste0("Runchart of ", input$hb, " ", heading()))+
+    labs(title = paste0("Runchart of ", heading()),
+         subtitle = input$hb)+
     theme_classic()+
     theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
           axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
