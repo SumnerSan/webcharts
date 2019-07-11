@@ -67,8 +67,8 @@ heading <- reactive({
     
   ggplot(rundata) +
     geom_hline(yintercept = 90, linetype = "dotted", colour = "black", alpha = 0.3) +
-    geom_line(aes(x = subgroup, y=measure, group = 1), colour = "#007db3", size = 1) + 
-    geom_point(aes(x = subgroup, y=measure, group = 1), colour = "#007db3", size = 2) +  
+    geom_line(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 1) + 
+    geom_point(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 2) +  
     geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
     geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
     geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "#ffcd04") +

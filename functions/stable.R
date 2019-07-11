@@ -64,8 +64,8 @@ RunChart = function(measure, subgroup, shiftsens) {
     dataDF$abovebelow = 0
     dataDF$abovebelow[dataDF$median == 0] = -1   # If the median is zero treat as below
     dataDF$abovebelow[dataDF$median == 100] = 1 #If the median is 100 treat as above
-    dataDF$abovebelow[dataDF$measure < dataDF$median] = -1
-    dataDF$abovebelow[dataDF$measure > dataDF$median] = 1
+    dataDF$abovebelow[round(dataDF$measure,0) < round(dataDF$median,0)] = -1
+    dataDF$abovebelow[round(dataDF$measure,0) > round(dataDF$median,0)] = 1
     
     # Overwrite 12 values at shiftpos with non-useful values if not interrupting baseline
     if(shiftsens == "none") {
@@ -189,8 +189,8 @@ RunChart = function(measure, subgroup, shiftsens) {
   dataDF <- dataDF%>%
     dplyr::mutate(trender = case_when(
       row_number() == 1 ~ "none", 
-      measure > lag(measure) ~ "up",
-      measure < lag(measure) ~ "down",
+      round(measure,0) > round(lag(measure),0) ~ "up",
+      round(measure,0) < round(lag(measure),0) ~ "down",
       TRUE ~ "fill"))%>% #Assign trend categories
     mutate(trenderpres = na_if(trender, "fill"))%>% #Coerce values that stay the same to NA for fill function below
     fill(trenderpres, .direction = "down")%>% #Fill periods that stay the same with previous useful observation
