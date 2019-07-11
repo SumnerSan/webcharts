@@ -23,10 +23,10 @@ shinyServer <- function(input, output) {
     myData <- myData%>%
       filter(HB2014Name == HB())%>%
       mutate(date = ymd(paste0(str_sub(as.character(Month), 1,4), "-", str_sub(as.character(Month), 5,6), "-01")),
-             performance = round(switch(input$datatype,"CAMHS seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100, 
+             performance = switch(input$datatype,"CAMHS seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100, 
                                   "CAMHS waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
                                   "PT seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100,
-                                  "PT waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100), 0))%>%
+                                  "PT waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100))%>%
       arrange(date)
       
   })
