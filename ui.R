@@ -29,11 +29,16 @@ shinyUI(fluidPage(
     
     
     # Show a plot of the generated distribution
-    column(10,
+    column(8,
            plotOutput("runchart"))
-
   ),
+    
+    # Show table
+    
+  fluidRow(column(10, dataTableOutput("rundata"))),
   
+  fluidRow(column(2,downloadButton("downloaddata", "Download data")),
   
-  fluidRow(column(3,downloadButton("pullchart", "Download chart"))
-  )))
+           column(2,downloadButton("downloadchart", "Download chart")))
+  ))
+
