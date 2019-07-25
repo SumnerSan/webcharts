@@ -93,11 +93,21 @@ heading <- reactive({
   
   output$runchart <- renderPlot({runplot()})
   
-  #output$rundata <- renderTable({rundata()})
+  output$rundata <- renderDataTable({rundata()})
   
-  output$pullchart <- downloadHandler(
+  output$downloaddata <- downloadHandler(
+    filename = function(){
+      paste("Runchart data for ", input$hb, " ", input$datatype, ".csv", sep = "")}, 
+    content = function(file){
+      write.csv(rundata(),
+                file,
+                row.names = FALSE)
+    }
+  )
+  
+  output$downloadchart <- downloadHandler(
     filename = function() {
-      paste0("Runchart of ", input$hb, input$datatype, ".png", sep = "")},
+      paste0("Runchart for ", input$hb, " ", input$datatype, ".png", sep = "")},
     content = function(file) {
       ggsave(file, plot = runplot(), device = "png")
     }
