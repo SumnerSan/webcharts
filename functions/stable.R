@@ -191,8 +191,8 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
   dataDF <- dataDF%>%
     dplyr::mutate(trender = case_when(
       row_number() == 1 ~ "none", 
-      round(measure,0) > round(lag(measure),1) ~ "up", #Round at calculation of trend
-      round(measure,0) < round(lag(measure),1) ~ "down",
+      round(measure,1) > round(lag(measure),1) ~ "up", #Round at calculation of trend
+      round(measure,1) < round(lag(measure),1) ~ "down",
       TRUE ~ "fill"))%>% #Assign trend categories
     mutate(trenderpres = na_if(trender, "fill"))%>% #Coerce values that stay the same to NA for fill function below
     fill(trenderpres, .direction = "down")%>% #Fill periods that stay the same with previous useful observation
