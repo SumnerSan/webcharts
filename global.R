@@ -14,7 +14,7 @@ library(stringr)
 library(scales)
 library(anytime)
 library(plyr)
-library("shinyWidgets")
+library(shinyWidgets)
 
 ###############################################.
 ## Functions ----

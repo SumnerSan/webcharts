@@ -45,7 +45,7 @@ shinyServer <- function(input, output, session) {
     myData <- myData%>%
       filter(HB2014Name == HB())%>%
       mutate(date = ymd(paste0(str_sub(as.character(Month), 1,4), "-", str_sub(as.character(Month), 5,6), "-01")),
-             performance = round(switch(input$datatype,"CAMHS seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100, 
+             performance = switch(input$datatype,"CAMHS seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100, 
                                         "CAMHS median" = (MedianWeeksPatientsSeen),
                                         "CAMHS 90th" = (X90thPercentileWeeksPatientsSeen),
                                         "CAMHS waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
@@ -58,7 +58,7 @@ shinyServer <- function(input, output, session) {
                                         "PT 90th" = (X90thPercentileWeeksPatientsSeen),
                                         "PT waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
                                         "PT referrals" = (ReferralsRecieved),
-                                        "PT accepted" = (ReferralsAccepted/ReferralsRecieved)*100),0)) %>%
+                                        "PT accepted" = (ReferralsAccepted/ReferralsRecieved)*100)) %>%
       arrange(date)
       
   })
@@ -123,21 +123,18 @@ heading <- reactive({
     
     if (unique(myData()$Target) == "yes") {
     
-    ggplot(rundata) +
+    ggplot(rundata, aes(x = subgroup)) +
       geom_hline(yintercept = 90, linetype = "dotted", colour = "black", alpha = 0.3) +
-      geom_line(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 1) + 
-      geom_point(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 2) +  
-      geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
-      geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
-      geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "#ffcd04") +
-      geom_point(aes(x = subgroup, y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "#004785") +
-      geom_text(aes(x = subgroup, y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
-      theme(axis.text.x=element_text(angle = 90, hjust = 0), panel.background = element_rect(fill = "transparent")) +
+      geom_line(aes(y=measure, group = 1), colour = "#00a2e5", size = 1) + 
+      geom_point(aes(y=measure, group = 1), colour = "#00a2e5", size = 2) +  
+      geom_line(aes(y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
+      geom_line(aes(y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
+      geom_point(aes(y=as.numeric(highlight), group = 1), colour = "#ffcd04") +
+      geom_point(aes(y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "#004785") +
+      geom_text(aes(y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
+      #theme(axis.text.x=element_text(angle = 90, hjust = 0), panel.background = element_rect(fill = "transparent")) +
       geom_text(x = min(rundata$subgroup), label = "90% target", y = 90, vjust = 1, hjust = 0)+
-      #geom_vline(xintercept = event1(), linetype = "dashed")+
-      #geom_text(x = event1(), label = stringr::str_wrap(anno1(),30), y = max(as.numeric(rundata$measure))*0.1, vjust = 1)+
       scale_y_continuous(limits=c(0, 110), expand = c(0, 0)) +
-      #scale_x_continuous(breaks=pretty(subgroup, n=30)) +
       scale_x_date(date_breaks = "3 months", date_labels = "%b-%Y") +
       xlab("Month of return") + ylab(yaxis()) +
       labs(title = paste0(input$hb, ": ", heading())) +
@@ -150,21 +147,16 @@ heading <- reactive({
       
     } else {
       
-    ggplot(rundata) +
-      #geom_hline(yintercept = 90, linetype = "dotted", colour = "black", alpha = 0.3) +
-      geom_line(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 1) + 
-      geom_point(aes(x = subgroup, y=measure, group = 1), colour = "#00a2e5", size = 2) +  
-      geom_line(aes(x = subgroup, y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
-      geom_line(aes(x = subgroup, y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
-      geom_point(aes(x = subgroup, y=as.numeric(highlight), group = 1), colour = "#ffcd04") +
-      geom_point(aes(x = subgroup, y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "#004785") +
-      geom_text(aes(x = subgroup, y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
+    ggplot(rundata, aes(x = subgroup)) +
+      geom_line(aes(y=measure, group = 1), colour = "#00a2e5", size = 1) + 
+      geom_point(aes(y=measure, group = 1), colour = "#00a2e5", size = 2) +  
+      geom_line(aes(y=median, group = base_n), linetype = "longdash", colour = "#ffcd04") +
+      geom_line(aes(y=baselines, group = base_n), linetype = "solid", colour = "#ffcd04", size = 1) +
+      geom_point(aes(y=as.numeric(highlight), group = 1), colour = "#ffcd04") +
+      geom_point(aes(y=as.numeric(trendind), group = 1), shape = 1, size = 5, colour = "#004785") +
+      geom_text(aes(y = median, group = base_n, label = base_label), vjust = 1, hjust = 0) +
       theme(axis.text.x=element_text(angle = 90, hjust = 0), panel.background = element_rect(fill = "transparent")) +
-      #geom_text(x = min(rundata$subgroup), label = "90% target", y = 90, vjust = 1, hjust = 0)+
-      #geom_vline(xintercept = event1(), linetype = "dashed")+
-      #geom_text(x = event1(), label = stringr::str_wrap(anno1(),30), y = max(as.numeric(rundata$measure))*0.1, vjust = 1)+
       scale_y_continuous(limits=c(0, 1.1*max(myData()$performance)), expand = c(0, 0)) +
-      #scale_x_continuous(breaks=pretty(subgroup, n=30)) +
       scale_x_date(date_breaks = "3 months", date_labels = "%b-%Y") +
       xlab("Month of return") + ylab(yaxis()) +
       labs(title = paste0(input$hb, ": ", heading())) +
