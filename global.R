@@ -15,6 +15,7 @@ library(scales)
 library(anytime)
 library(plyr)
 library(shinyWidgets)
+library(zoo)
 
 ###############################################.
 ## Functions ----
