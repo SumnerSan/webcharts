@@ -130,7 +130,7 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
     }
     
     # If rebase occurs over 9-11 points at end of dataframe, rebase as temporary
-    else if (shiftpos+11 > length(dataDF$measure) & dataDF$runlength[shiftpos] >=9)
+    else if (shiftpos+11 > length(dataDF$measure))
     {d <- length(dataDF$measure) - shiftpos
     # Increment base_n to disconnect baselines
     base_n <- base_n + 1
@@ -140,11 +140,7 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
     break
     
     }
-    else if (shiftpos+11 > length(dataDF$measure)){
-
-    break
     
-    }
     
     ### Otherwise the current baseline is temporary and is labelled as such
     else  {
