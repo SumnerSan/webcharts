@@ -6,11 +6,16 @@
 
 shinyServer <- function(input, output, session) {
   
+  HB<- reactive({
+    input$hb
+  })
+  
   observeEvent(input$hb, {
     measures2 <- measures[measures$board == input$hb, ]
     
     updatePickerInput(session = session, inputId = "datatype",
-                      choices = as.character(unique(measures2$measure)))
+                      choices = as.character(unique(measures2$measure)),
+                      selected = ifelse(HB() == "NHS 24", "PT seen", input$datatype))
     
   }, ignoreInit = TRUE)
 
@@ -31,10 +36,6 @@ shinyServer <- function(input, output, session) {
                      "PT referrals" = pt.referrals,
                      "PT accepted" = pt.referrals) %>%
       mutate(measure_name = input$datatype)
-    
-    HB<- reactive({
-      input$hb
-    })
     
     myData <- myData%>%
       left_join(HBlook, by = c("HBT2014" = "HB2014"))
