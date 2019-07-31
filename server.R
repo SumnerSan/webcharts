@@ -6,11 +6,16 @@
 
 shinyServer <- function(input, output, session) {
   
+  HB<- reactive({
+    input$hb
+  })
+  
   observeEvent(input$hb, {
     measures2 <- measures[measures$board == input$hb, ]
     
     updatePickerInput(session = session, inputId = "datatype",
-                      choices = as.character(unique(measures2$measure)))
+                      choices = as.character(unique(measures2$measure)),
+                      selected = ifelse(input$hb == "NHS 24", "PT seen", input$datatype))
     
   }, ignoreInit = TRUE)
 
@@ -31,10 +36,6 @@ shinyServer <- function(input, output, session) {
                      "PT referrals" = pt.referrals,
                      "PT accepted" = pt.referrals) %>%
       mutate(measure_name = input$datatype)
-    
-    HB<- reactive({
-      input$hb
-    })
     
     myData <- myData%>%
       left_join(HBlook, by = c("HBT2014" = "HB2014"))
@@ -92,14 +93,14 @@ heading <- reactive({
                     "CAMHS waiting" = "percentage of CAMHS patients waiting under 18 weeks",
                     "CAMHS DNAs" = "percentage of CAMHS appointments where patient did not attend",
                     "CAMHS referrals" = "number of CAMHS referrals received",
-                    "CAMHS accepted" = "percentage CAMHS referrals accepted",
+                    "CAMHS accepted" = "percentage of CAMHS referrals accepted",
                     "CAMHS open" = "number of patients on caseload",
                     "PT seen" = "percentage of PT patients seen within 18 weeks",
                     "PT median" = "median experienced wait for PT patients",
                     "PT 90th" = "90th percentile experienced wait for PT patients", 
                     "PT waiting" = "percentage of PT patients waiting under 18 weeks",
                     "PT referrals" = "number of PT referrals received",
-                    "PT accepted" = "percentage PT referrals accepted")
+                    "PT accepted" = "percentage of PT referrals accepted")
   
 })
   
@@ -166,10 +167,15 @@ heading <- reactive({
             axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
             axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
             axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) }
-      
   }) # ggplot chart
   
-  output$runchart <- renderPlot({runplot()})
+  output$runchart <- renderPlot({
+    
+    shiny::validate(
+      shiny::need(try(!is.null(rundata())),
+                  "Creating chart")
+    )
+    runplot()})
   
   output$rundata <- renderDataTable({rundata()})
   
