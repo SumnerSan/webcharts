@@ -169,7 +169,13 @@ heading <- reactive({
             axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) }
   }) # ggplot chart
   
-  output$runchart <- renderPlot({runplot()})
+  output$runchart <- renderPlot({
+    
+    shiny::validate(
+      shiny::need(try(!is.null(rundata())),
+                  "Creating chart")
+    )
+    runplot()})
   
   output$rundata <- renderDataTable({rundata()})
   
