@@ -93,14 +93,14 @@ heading <- reactive({
                     "CAMHS waiting" = "percentage of CAMHS patients waiting under 18 weeks",
                     "CAMHS DNAs" = "percentage of CAMHS appointments where patient did not attend",
                     "CAMHS referrals" = "number of CAMHS referrals received",
-                    "CAMHS accepted" = "percentage CAMHS referrals accepted",
+                    "CAMHS accepted" = "percentage of CAMHS referrals accepted",
                     "CAMHS open" = "number of patients on caseload",
                     "PT seen" = "percentage of PT patients seen within 18 weeks",
                     "PT median" = "median experienced wait for PT patients",
                     "PT 90th" = "90th percentile experienced wait for PT patients", 
                     "PT waiting" = "percentage of PT patients waiting under 18 weeks",
                     "PT referrals" = "number of PT referrals received",
-                    "PT accepted" = "percentage PT referrals accepted")
+                    "PT accepted" = "percentage of PT referrals accepted")
   
 })
   
