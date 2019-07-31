@@ -82,6 +82,7 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
       fill(abovebelowpreserved, .direction = "down")%>%
       mutate(abovebelowpreserved = ifelse((median == 0 & measure == 0) | (median == 100 & measure == 100 & Chart_type=="percent"), 0, abovebelowpreserved))
     
+    
     #Number the runs above or below the median   
     runChange = dataDF$abovebelowpreserved[-1L] != dataDF$abovebelowpreserved[-nrow(dataDF)] #List change points in data with TRUE
     runChange[dataDF$median[-1L] != dataDF$median[-nrow(dataDF)]] = TRUE #Start new run at rephase points
@@ -107,16 +108,13 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
     
     # Calculate the position of the next minimum 6 point shift (returns one if no more shifts)
     # Parameterise sensitivity of rebase to either interrupt with any shift or only sustained shifts, or don't interrupt
-    if(shiftsens == "none") {
-      newshiftpos = min(which.max(dataDF$runlength >= 9 & index(dataDF$runNo)>shiftpos+11),nrow(dataDF))} #Use index to ignore 12 values within baseline
+    
+    if(shiftsens == "none") { #finds first index where a run of 9+ occurs after the 12 values within baseline
+      newshiftpos = min(which.max(dataDF$runlength >= 9 & dataDF$runNo >= dataDF$runNo[shiftpos+20] & index(dataDF$runNo) > shiftpos + 11),nrow(dataDF))} #shiftpos + 20 means that the run, if it starts in the middle of the rebase, has to continue 9 points beyond the end of the rebase.
     if (shiftsens == "newshiftpos") {
       newshiftpos = min(which.max(dataDF$runlength >= 6 & dataDF$runNo > dataDF$runNo[shiftpos]),nrow(dataDF))} #Otherwise just look for next shift
     if (shiftsens == "newsusshiftpos") {
       newshiftpos = min(which.max(dataDF$runlength >= 9 & dataDF$runNo > dataDF$runNo[shiftpos]),nrow(dataDF))} #Or next sustained shift
-    
-    #remove existing runlength column so as not to interfere with next join iteration
-    dataDF = dataDF%>%
-      select(-runlength)
     
     # Mark as new baseline if
     # (a) there are 12 data points (not counting blanks or NAs); and
@@ -132,13 +130,18 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
     }
     
     # If rebase occurs over 9-11 points at end of dataframe, rebase as temporary
-    else if (shiftpos+11 > length(dataDF$measure))
+    else if (shiftpos+11 > length(dataDF$measure) & dataDF$runlength[shiftpos] >=9)
     {d <- length(dataDF$measure) - shiftpos
     # Increment base_n to disconnect baselines
     base_n <- base_n + 1
     dataDF$base_n[shiftpos:length(dataDF$base_n)] = base_n
     # Label baseline (Temporary)
     dataDF$base_label[shiftpos] = paste0("Temporary: ", round(dataDF$median[shiftpos],1))
+    break
+    
+    }
+    else if (shiftpos+11 > length(dataDF$measure)){
+
     break
     
     }
@@ -155,6 +158,10 @@ RunChart = function(measure, Chart_type, subgroup, shiftsens) {
     if (newshiftpos == 1) {
       
       break} #If newsusshiftpos is 1 there are no more sustained shifts and we can stop looping
+    
+    #remove existing runlength column so as not to interfere with next join iteration
+    dataDF = dataDF%>%
+      select(-runlength)
     
     ### Recalculate median and extend to end
     dataDF$median[newshiftpos:length(dataDF$measure)] = median(dataDF$measure[newshiftpos:min(newshiftpos+11,(newshiftpos+dataDF$runlength[newshiftpos]-1), nrow(dataDF))]) # Median
