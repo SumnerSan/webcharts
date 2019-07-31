@@ -15,7 +15,7 @@ shinyServer <- function(input, output, session) {
     
     updatePickerInput(session = session, inputId = "datatype",
                       choices = as.character(unique(measures2$measure)),
-                      selected = ifelse(HB() == "NHS 24", "PT seen", input$datatype))
+                      selected = ifelse(input$hb == "NHS 24", "PT seen", input$datatype))
     
   }, ignoreInit = TRUE)
 
@@ -167,7 +167,6 @@ heading <- reactive({
             axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
             axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
             axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) }
-      
   }) # ggplot chart
   
   output$runchart <- renderPlot({runplot()})
