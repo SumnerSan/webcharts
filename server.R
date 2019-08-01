@@ -51,15 +51,15 @@ shinyServer <- function(input, output, session) {
                                         "CAMHS 90th" = (X90thPercentileWeeksPatientsSeen),
                                         "CAMHS waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
                                         "CAMHS DNAs" = (DidNotAttends/TotalAppointments)*100,
-                                        "CAMHS referrals" = (ReferralsRecieved),
-                                        "CAMHS accepted" = (ReferralsAccepted/ReferralsRecieved)*100,
+                                        "CAMHS referrals" = (ReferralsReceived),
+                                        "CAMHS accepted" = (ReferralsAccepted/ReferralsReceived)*100,
                                         "CAMHS open" = (OpenCases),
                                         "PT seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100,
                                         "PT median" = (MedianWeeksPatientsSeen),
                                         "PT 90th" = (X90thPercentileWeeksPatientsSeen),
                                         "PT waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
-                                        "PT referrals" = (ReferralsRecieved),
-                                        "PT accepted" = (ReferralsAccepted/ReferralsRecieved)*100)) %>%
+                                        "PT referrals" = (ReferralsReceived),
+                                        "PT accepted" = (ReferralsAccepted/ReferralsReceived)*100)) %>%
       arrange(date)
       
   })
