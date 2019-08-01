@@ -34,12 +34,12 @@ shinyUI(fluidPage(
                       
   # Show table
           
-  fluidRow(column(7, dataTableOutput("rundata"))
-  ),
+  #fluidRow(column(7, dataTableOutput("rundata"))
+  #),
                     
   fluidRow(
-    column(2, downloadButton("downloaddata", "Download data")
-    ),
+    #column(2, downloadButton("downloaddata", "Download data")
+    #),
                     
     column(10, downloadButton("downloadchart", "Download chart")
     )
