@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 
+datasource.R
+
 # 'data' folder #
 data/
 
