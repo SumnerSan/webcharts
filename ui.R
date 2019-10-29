@@ -4,50 +4,41 @@
 shinyUI(fluidPage(
   title = "Runchart Builder",
   
-  fluidRow(
-    br(),
-    column(2, "Build your chart",
-           column(12,
-                  pickerInput(
-                    inputId = "datatype",
-                    label = "Select measure",
-                    choices = as.character(unique(measures$measure)),
-                    width = "fit"
-                  ),
-                  pickerInput(
-                    inputId = "hb",
-                    label = "Select board",
-                    choices = as.character(unique(measures$board))
-                  )
-           )
-    ),
-    
-    # Show a plot of the generated distribution
-    
-    column(8, offset = 0.9,
-           plotOutput("runchart")
-    )
-    
-  ),
+  # Show a plot of the generated distribution
   
   br(),
   
-  fluidRow(
-    column(8, offset = 2, textOutput("footnote")
-    )),
+  fluidRow(column(8,
+                  plotOutput("runchart")
+  )),
+  
+  br(),
   
   hr(),
   
-  # Show table
-  
-  #fluidRow(column(7, dataTableOutput("rundata"))
-  #),
-  
   fluidRow(
-    column(2, downloadButton("downloaddata", "Download data")
-    ),
     
-    column(10, downloadButton("downloadchart", "Download chart")
-    )
-  ))
-)
+    column(2, pickerInput(
+      inputId = "datatype",
+      label = "Select measure",
+      choices = as.character(unique(measures$measure)),
+      width = "fit"
+    )),
+    column(2, offset = 1, pickerInput(
+      inputId = "hb",
+      label = "Select board",
+      choices = as.character(unique(measures$board))
+    )),
+    
+    column(2, offset = 1, style = "margin-top: 25px;", 
+           downloadButton("downloaddata", "Download data")),
+    
+    column(2, style = "margin-top: 25px;",
+           downloadButton("downloadchart", "Download chart")))))
+
+#br()
+
+# Show table
+
+#fluidRow(column(7, dataTableOutput("rundata"))
+#)
