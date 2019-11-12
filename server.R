@@ -227,8 +227,8 @@ shinyServer <- function(input, output, session) {
              caption = paste("Source: ISD",  myData()$Service, "Waiting Times database")) +
         theme_classic()+
         theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
-              axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
-              axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
+              axis.title.x = element_text(family = "Arial", size = 12, face = "bold"),
+              axis.title.y = element_text(family = "Arial", size = 12, face = "bold"),
               axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
       
     } else {
@@ -252,8 +252,8 @@ shinyServer <- function(input, output, session) {
              caption = paste("Source: ISD",  myData()$Service, "Waiting Times database")) +
         theme_classic()+
         theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
-              axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
-              axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
+              axis.title.x = element_text(family = "Arial", size = 12, face = "bold"),
+              axis.title.y = element_text(family = "Arial", size = 12, face = "bold"),
               axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) }
   }) # ggplot chart
   
@@ -283,7 +283,7 @@ shinyServer <- function(input, output, session) {
     filename = function() {
       paste0("Runchart for ", input$hb, " ", input$datatype, ".png", sep = "")},
     content = function(file) {
-      ggsave(file, plot = runplot(), device = "png")
+      ggsave(file, plot = runplot(), device = "png", width = 25.5, height = 9, units = "cm", dpi = 300) 
     }
   )
   
