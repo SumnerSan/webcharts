@@ -4,9 +4,12 @@
 .Ruserdata
 .Rprofile
 
+<<<<<<< HEAD
 # datasource code
 datasource.R
 
+=======
+>>>>>>> 0f12943d7b2588b9d1da1076577e0c10e22ce1f5
 # 'data' folder #
 data/
 
