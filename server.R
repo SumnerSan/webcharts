@@ -224,7 +224,7 @@ shinyServer <- function(input, output, session) {
         #subtitle = paste(subheading()))+
         labs(title = paste0(input$hb, ": ", heading()),
              subtitle = subheading(),
-             caption = paste("Source: ISD",  myData()$Service, "Waiting Times database")) +
+             caption = paste("Source: PHS",  myData()$Service, "Waiting Times database")) +
         theme_classic()+
         theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
               axis.title.x = element_text(family = "Arial", size = 12, face = "bold"),
