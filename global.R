@@ -5,6 +5,8 @@
 ############################.
 ##Packages ----
 ############################.
+
+library(plyr)
 library(shiny)
 library(tidyverse)
 library(lubridate)
@@ -13,7 +15,6 @@ library(ggplot2)
 library(stringr)
 library(scales)
 library(anytime)
-library(plyr)
 library(shinyWidgets)
 library(zoo)
 

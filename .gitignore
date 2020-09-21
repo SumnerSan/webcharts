@@ -2,9 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
+.Rprofile
 
+<<<<<<< HEAD
+# datasource code
 datasource.R
 
+=======
+>>>>>>> 0f12943d7b2588b9d1da1076577e0c10e22ce1f5
 # 'data' folder #
 data/
 
@@ -13,6 +18,9 @@ rsconnect/
 
 #file used for deploying the app
 deploying_app.R
+
+# Powerpoint
+*.[pP][pP][tT][xX]
 
 # Common text files that may contain data #
 *.[cC][sS][vV]

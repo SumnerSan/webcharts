@@ -57,36 +57,36 @@ shinyServer <- function(input, output, session) {
       left_join(matrix, by = c("measure_name" = "Measure"))
     
     myData <- myData%>%
-      filter(HB2014Name == HB())%>%
+      filter(HBName == HB())%>%
       mutate(date = ymd(paste0(str_sub(as.character(Month), 1,4), "-", str_sub(as.character(Month), 5,6), "-01")),
-             performance = switch(input$datatype, "CAMHS seen" = TotalPatientsSeen,
-                                  "CAMHS %seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100, 
-                                  "CAMHS median" = MedianWeeksPatientsSeen,
-                                  "CAMHS 90th" = X90thPercentileWeeksPatientsSeen,
-                                  "CAMHS waiting" = TotalPatientsWaiting,
-                                  "CAMHS %waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
+             performance = switch(input$datatype, "CAMHS seen" = TotalPatients,
+                                  "CAMHS %seen" = (NumberOfPatients0To18Weeks/TotalPatients)*100, 
+                                  "CAMHS median" = MedianWeeks,
+                                  "CAMHS 90th" = `90thPercentileWeeks`,
+                                  "CAMHS waiting" = TotalPatients,
+                                  "CAMHS %waiting" = (NumberOfPatients0To18Weeks/TotalPatients)*100,
                                   "CAMHS %DNAs" = (DidNotAttends/TotalAppointments)*100,
                                   "CAMHS referrals" = ReferralsReceived,
                                   "CAMHS accepted" = ReferralsAccepted,                                  
                                   "CAMHS %accepted" = (ReferralsAccepted/ReferralsReceived)*100,
                                   "CAMHS rejected" = (ReferralsReceived - ReferralsAccepted),
                                   "CAMHS %rejected" = ((ReferralsReceived - ReferralsAccepted)/ReferralsReceived)*100,
-                                  "CAMHS referral rate" = (ReferralsReceived/Pop0.17)*1000,
-                                  "CAMHS accepted rate" = (ReferralsAccepted/Pop0.17)*1000,
+                                  "CAMHS referral rate" = ReferralRate,
+                                  "CAMHS accepted rate" = AcceptedReferralRate,
                                   "CAMHS open" = OpenCases,
-                                  "PT seen" = TotalPatientsSeen,
-                                  "PT %seen" = (NumberOfPatientsSeen0To18Weeks/TotalPatientsSeen)*100,
-                                  "PT median" = MedianWeeksPatientsSeen,
-                                  "PT 90th" = X90thPercentileWeeksPatientsSeen,
-                                  "PT waiting" = TotalPatientsWaiting,
-                                  "PT %waiting" = (NumberOfPatientsWaiting0To18Weeks/TotalPatientsWaiting)*100,
+                                  "PT seen" = TotalPatients,
+                                  "PT %seen" = (NumberOfPatients0To18Weeks/TotalPatients)*100,
+                                  "PT median" = MedianWeeks,
+                                  "PT 90th" = `90thPercentileWeeks`,
+                                  "PT waiting" = TotalPatients,
+                                  "PT %waiting" = (NumberOfPatients0To18Weeks/TotalPatients)*100,
                                   "PT referrals" = ReferralsReceived,
                                   "PT accepted" = ReferralsAccepted,
                                   "PT %accepted" = (ReferralsAccepted/ReferralsReceived)*100,
                                   "PT rejected" = (ReferralsReceived - ReferralsAccepted),
                                   "PT %rejected" = ((ReferralsReceived - ReferralsAccepted)/ReferralsReceived)*100,
-                                  "PT referral rate" = (ReferralsReceived/Pop.All.ages)*1000,
-                                  "PT accepted rate" = (ReferralsAccepted/Pop.All.ages)*1000)) %>%
+                                  "PT referral rate" = ReferralRate,
+                                  "PT accepted rate" = AcceptedReferralRate)) %>%
       arrange(date)
     
   })
@@ -138,8 +138,8 @@ shinyServer <- function(input, output, session) {
                       "CAMHS %accepted" = "percentage of CAMHS referrals accepted",
                       "CAMHS rejected" = "number of CAMHS referrals rejected",
                       "CAMHS %rejected" = "percentage of CAMHS referrals rejected",
-                      "CAMHS referral rate" = "referral rate per 1000 people under 18",
-                      "CAMHS accepted rate" = "accepted referral rate per 1000 people under 18",
+                      "CAMHS referral rate" = "referral rate per 1000 people aged 18 and under",
+                      "CAMHS accepted rate" = "accepted referral rate per 1000 people aged 18 and under",
                       "CAMHS open" = "number of patients on caseload",
                       "PT seen" = "total number of PT patients seen",
                       "PT %seen" = "percentage of PT patients who were seen within 18 weeks",
@@ -170,8 +170,8 @@ shinyServer <- function(input, output, session) {
                          "CAMHS %accepted" = "the number of accepted referrals compared with the total number of referrals received",
                          "CAMHS rejected" = "the number of referrals received into the CAMHS service that were rejected",
                          "CAMHS %rejected" = "the number of rejected referrals compared with the total number of referrals received",
-                         "CAMHS referral rate" = "based on the number of referrals received into the CAMHS service and the 2018 mid-year population 0-17",
-                         "CAMHS accepted rate" = "based on the number of accepted CAMHS referrals and the 2018 mid-year population 0-17",
+                         "CAMHS referral rate" = "based on the number of referrals received into the CAMHS service and the 2019 mid-year population 0-18 inc.",
+                         "CAMHS accepted rate" = "based on the number of accepted CAMHS referrals and the 2019 mid-year population 0-18 inc.",
                          "CAMHS open" = "the total number of individuals that the CAMHS services have on their systems as current patients",
                          "PT %seen" = "based on the waiting times experienced from referral to treatment",
                          "PT median" = "based on the waiting times experienced from referral to treatment",
@@ -182,8 +182,8 @@ shinyServer <- function(input, output, session) {
                          "PT %accepted" = "the number of accepted referrals compared with the total number of referrals received",
                          "PT rejected" = "the number of referrals received into the PT service that were rejected",
                          "PT %rejected" = "the number of rejected referrals compared with the total number of referrals received",
-                         "PT referral rate" = "based on the number of referrals received into the PT service and the 2018 mid-year population",
-                         "PT accepted rate" = "based on the number of accepted PT referrals and the 2018 mid-year population")
+                         "PT referral rate" = "based on the number of referrals received into the PT service and the 2019 mid-year population",
+                         "PT accepted rate" = "based on the number of accepted PT referrals and the 2019 mid-year population")
   })
   
   rundata <- reactive({
@@ -224,11 +224,11 @@ shinyServer <- function(input, output, session) {
         #subtitle = paste(subheading()))+
         labs(title = paste0(input$hb, ": ", heading()),
              subtitle = subheading(),
-             caption = paste("Source: ISD",  myData()$Service, "Waiting Times database")) +
+             caption = paste("Source: PHS",  myData()$Service, "Waiting Times database")) +
         theme_classic()+
         theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
-              axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
-              axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
+              axis.title.x = element_text(family = "Arial", size = 12, face = "bold"),
+              axis.title.y = element_text(family = "Arial", size = 12, face = "bold"),
               axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
       
     } else {
@@ -252,8 +252,8 @@ shinyServer <- function(input, output, session) {
              caption = paste("Source: ISD",  myData()$Service, "Waiting Times database")) +
         theme_classic()+
         theme(plot.title = element_text(family = "Arial", size = 14, face = "bold"),
-              axis.title.x = element_text(family = "Arial", size = 11, face = "bold"),
-              axis.title.y = element_text(family = "Arial", size = 11, face = "bold"),
+              axis.title.x = element_text(family = "Arial", size = 12, face = "bold"),
+              axis.title.y = element_text(family = "Arial", size = 12, face = "bold"),
               axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) }
   }) # ggplot chart
   
@@ -283,7 +283,7 @@ shinyServer <- function(input, output, session) {
     filename = function() {
       paste0("Runchart for ", input$hb, " ", input$datatype, ".png", sep = "")},
     content = function(file) {
-      ggsave(file, plot = runplot(), device = "png")
+      ggsave(file, plot = runplot(), device = "png", width = 25.5, height = 9, units = "cm", dpi = 300) 
     }
   )
   
